@@ -1165,3 +1165,216 @@ code {
     }
 
 }
+
+/* =========================================================
+   PROJECT MODAL
+   ========================================================= */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background: rgba(0, 0, 0, 0.72);
+
+    backdrop-filter: blur(8px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+
+    z-index: 9999;
+}
+
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.project-modal {
+    width: min(560px, 100%);
+
+    background: #101621;
+
+    border: 1px solid #202b3d;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.55);
+
+    transform: translateY(20px) scale(0.98);
+
+    transition: transform 0.2s ease;
+}
+
+
+.modal-overlay.active .project-modal {
+    transform: translateY(0) scale(1);
+}
+
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 28px 28px 20px;
+
+    border-bottom: 1px solid #202b3d;
+}
+
+
+.modal-header h2 {
+    margin: 6px 0 6px;
+
+    font-size: 24px;
+}
+
+
+.modal-header p {
+    margin: 0;
+
+    color: #8b95a7;
+
+    font-size: 14px;
+}
+
+
+.modal-close {
+    width: 36px;
+    height: 36px;
+
+    border: 1px solid #263247;
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: #9ca7b8;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.modal-close:hover {
+    background: #192233;
+    color: #ffffff;
+}
+
+
+.project-form {
+    padding: 24px 28px 28px;
+}
+
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #dce3ee;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    border: 1px solid #273449;
+
+    border-radius: 10px;
+
+    background: #0a0f18;
+
+    color: #ffffff;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #596579;
+}
+
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #4f8cff;
+
+    box-shadow:
+        0 0 0 3px rgba(79, 140, 255, 0.12);
+}
+
+
+.form-group small {
+    display: block;
+
+    margin-top: 7px;
+
+    color: #69758a;
+
+    font-size: 12px;
+}
+
+
+.form-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding-top: 6px;
+}
+
+
+.form-actions button {
+    min-width: 110px;
+}

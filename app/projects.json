@@ -1,9 +1,1 @@
-﻿[
-    {
-        "id": 1,
-        "name": "MY TECH LAB",
-        "description": "Personal technology, research and automation laboratory.",
-        "technology": "Python, FastAPI, Jinja2",
-        "status": "ACTIVE"
-    }
-]
+[]

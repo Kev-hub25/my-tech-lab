@@ -19,67 +19,404 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+
+    <style>
+        /* =====================================================
+           PROJECT MODAL
+           ===================================================== */
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 24px;
+
+            background: rgba(0, 0, 0, 0.72);
+
+            backdrop-filter: blur(8px);
+
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+
+            transition:
+                opacity 0.2s ease,
+                visibility 0.2s ease;
+
+            z-index: 9999;
+        }
+
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+
+        .project-modal {
+            width: min(560px, 100%);
+
+            background: #101621;
+
+            border: 1px solid #202b3d;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.55);
+
+            transform: translateY(20px) scale(0.98);
+
+            transition:
+                transform 0.2s ease;
+        }
+
+
+        .modal-overlay.active .project-modal {
+            transform: translateY(0) scale(1);
+        }
+
+
+        .modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 28px 28px 20px;
+
+            border-bottom: 1px solid #202b3d;
+        }
+
+
+        .modal-header h2 {
+            margin: 6px 0 6px;
+
+            color: #ffffff;
+
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+
+        .modal-header p {
+            margin: 0;
+
+            color: #8b95a7;
+
+            font-size: 14px;
+        }
+
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+
+            border: 1px solid #263247;
+
+            border-radius: 10px;
+
+            background: transparent;
+
+            color: #9ca7b8;
+
+            font-size: 24px;
+            line-height: 1;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .modal-close:hover {
+            background: #192233;
+
+            border-color: #34435c;
+
+            color: #ffffff;
+        }
+
+
+        .project-form {
+            padding: 24px 28px 28px;
+        }
+
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #dce3ee;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 12px 14px;
+
+            border: 1px solid #273449;
+
+            border-radius: 10px;
+
+            background: #0a0f18;
+
+            color: #ffffff;
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .form-group textarea {
+            resize: vertical;
+
+            min-height: 100px;
+        }
+
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #596579;
+        }
+
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #4f8cff;
+
+            background: #0c121d;
+
+            box-shadow:
+                0 0 0 3px rgba(79, 140, 255, 0.12);
+        }
+
+
+        .form-group small {
+            display: block;
+
+            margin-top: 7px;
+
+            color: #69758a;
+
+            font-size: 12px;
+        }
+
+
+        .form-actions {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            padding-top: 6px;
+        }
+
+
+        .form-actions button {
+            min-width: 110px;
+        }
+
+
+        /* =====================================================
+           MOBILE MODAL
+           ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .modal-overlay {
+                padding: 14px;
+            }
+
+
+            .project-modal {
+                border-radius: 14px;
+            }
+
+
+            .modal-header {
+                padding: 22px 20px 18px;
+            }
+
+
+            .project-form {
+                padding: 20px;
+            }
+
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+
+            .form-actions button {
+                width: 100%;
+            }
+
+        }
+    </style>
+
 </head>
+
 
 <body>
 
     <div class="app">
 
-        <!-- Sidebar -->
+        <!-- =================================================
+             SIDEBAR
+             ================================================= -->
+
         <aside class="sidebar">
 
             <div class="brand">
+
                 <div class="brand-icon">
                     ⚡
                 </div>
 
                 <div>
                     <h1>MY TECH LAB</h1>
-                    <span>Developer Workspace</span>
+
+                    <span>
+                        Developer Workspace
+                    </span>
                 </div>
+
             </div>
 
 
             <nav class="navigation">
 
-                <p class="nav-label">WORKSPACE</p>
+                <p class="nav-label">
+                    WORKSPACE
+                </p>
+
 
                 <a href="#" class="nav-item active">
-                    <span class="nav-icon">⌂</span>
-                    <span>Dashboard</span>
-                </a>
 
-                <a href="#" class="nav-item">
-                    <span class="nav-icon">◈</span>
-                    <span>Projects</span>
-                </a>
+                    <span class="nav-icon">
+                        ⌂
+                    </span>
 
-                <a href="#" class="nav-item">
-                    <span class="nav-icon">⚙</span>
-                    <span>Tools</span>
-                </a>
+                    <span>
+                        Dashboard
+                    </span>
 
-                <a href="#" class="nav-item">
-                    <span class="nav-icon">&lt;/&gt;</span>
-                    <span>APIs</span>
                 </a>
 
 
-                <p class="nav-label">SYSTEM</p>
-
                 <a href="#" class="nav-item">
-                    <span class="nav-icon">▣</span>
-                    <span>Database</span>
+
+                    <span class="nav-icon">
+                        ◈
+                    </span>
+
+                    <span>
+                        Projects
+                    </span>
+
                 </a>
 
-                <a href="#" class="nav-item">
-                    <span class="nav-icon">↗</span>
-                    <span>Analytics</span>
-                </a>
 
                 <a href="#" class="nav-item">
-                    <span class="nav-icon">⚙</span>
-                    <span>Settings</span>
+
+                    <span class="nav-icon">
+                        ⚙
+                    </span>
+
+                    <span>
+                        Tools
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">
+                        &lt;/&gt;
+                    </span>
+
+                    <span>
+                        APIs
+                    </span>
+
+                </a>
+
+
+                <p class="nav-label">
+                    SYSTEM
+                </p>
+
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">
+                        ▣
+                    </span>
+
+                    <span>
+                        Database
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">
+                        ↗
+                    </span>
+
+                    <span>
+                        Analytics
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">
+                        ⚙
+                    </span>
+
+                    <span>
+                        Settings
+                    </span>
+
                 </a>
 
             </nav>
@@ -88,16 +425,31 @@
             <div class="sidebar-footer">
 
                 <div class="status-indicator">
+
                     <span class="status-dot"></span>
 
                     <div>
-                        <strong>System Online</strong>
-                        <small>All systems operational</small>
+
+                        <strong>
+                            System Online
+                        </strong>
+
+                        <small>
+                            All systems operational
+                        </small>
+
                     </div>
+
                 </div>
 
+
                 <div class="version">
-                    MY TECH LAB <span>v1.0.0</span>
+
+                    MY TECH LAB
+                    <span>
+                        v1.0.0
+                    </span>
+
                 </div>
 
             </div>
@@ -105,30 +457,45 @@
         </aside>
 
 
-        <!-- Main Content -->
+        <!-- =================================================
+             MAIN CONTENT
+             ================================================= -->
+
         <main class="main-content">
 
-            <!-- Top bar -->
+
+            <!-- TOP BAR -->
+
             <header class="topbar">
 
                 <div>
-                    <p class="breadcrumb">WORKSPACE / DASHBOARD</p>
 
-                    <h2>Good evening, {{ user }}.</h2>
+                    <p class="breadcrumb">
+                        WORKSPACE / DASHBOARD
+                    </p>
+
+
+                    <h2>
+                        Good evening, {{ user }}.
+                    </h2>
+
 
                     <p class="welcome-text">
                         Welcome back to your technology laboratory.
                     </p>
+
                 </div>
+
 
                 <div class="topbar-actions">
 
-                    <button class="icon-button" title="Notifications">
+                    <button class="icon-button" title="Notifications" type="button">
                         ◌
                     </button>
 
+
                     <div class="avatar">
-                        KV
+                        ML
                     </div>
 
                 </div>
@@ -136,25 +503,43 @@
             </header>
 
 
-            <!-- Dashboard -->
+            <!-- =================================================
+                 DASHBOARD
+                 ================================================= -->
+
             <section class="dashboard">
 
-                <!-- Stats -->
+
+                <!-- STATS -->
+
                 <div class="stats-grid">
+
 
                     <div class="stat-card">
 
                         <div class="stat-top">
-                            <span class="stat-label">PROJECTS</span>
-                            <span class="stat-icon blue">◈</span>
+
+                            <span class="stat-label">
+                                PROJECTS
+                            </span>
+
+                            <span class="stat-icon blue">
+                                ◈
+                            </span>
+
                         </div>
+
 
                         <div class="stat-value">
                             {{ "%02d"|format(project_count) }}
                         </div>
 
+
                         <p>
-                            <span class="positive">↑ Active</span>
+                            <span class="positive">
+                                ↑ Active
+                            </span>
+
                             development
                         </p>
 
@@ -164,11 +549,22 @@
                     <div class="stat-card">
 
                         <div class="stat-top">
-                            <span class="stat-label">APIs</span>
-                            <span class="stat-icon purple">&lt;/&gt;</span>
+
+                            <span class="stat-label">
+                                APIs
+                            </span>
+
+                            <span class="stat-icon purple">
+                                &lt;/&gt;
+                            </span>
+
                         </div>
 
-                        <div class="stat-value">00</div>
+
+                        <div class="stat-value">
+                            00
+                        </div>
+
 
                         <p>
                             Ready to build
@@ -180,11 +576,22 @@
                     <div class="stat-card">
 
                         <div class="stat-top">
-                            <span class="stat-label">TOOLS</span>
-                            <span class="stat-icon green">⚙</span>
+
+                            <span class="stat-label">
+                                TOOLS
+                            </span>
+
+                            <span class="stat-icon green">
+                                ⚙
+                            </span>
+
                         </div>
 
-                        <div class="stat-value">00</div>
+
+                        <div class="stat-value">
+                            00
+                        </div>
+
 
                         <p>
                             Available utilities
@@ -196,13 +603,22 @@
                     <div class="stat-card">
 
                         <div class="stat-top">
-                            <span class="stat-label">STATUS</span>
-                            <span class="stat-icon green">●</span>
+
+                            <span class="stat-label">
+                                STATUS
+                            </span>
+
+                            <span class="stat-icon green">
+                                ●
+                            </span>
+
                         </div>
+
 
                         <div class="stat-value online">
                             ONLINE
                         </div>
+
 
                         <p>
                             System operational
@@ -213,31 +629,47 @@
                 </div>
 
 
-                <!-- Projects section -->
+                <!-- =================================================
+                     PROJECT SECTION
+                     ================================================= -->
+
                 <div class="section-header">
 
                     <div>
-                        <span class="section-eyebrow">DEVELOPMENT</span>
 
-                        <h3>Recent Projects</h3>
+                        <span class="section-eyebrow">
+                            DEVELOPMENT
+                        </span>
+
+
+                        <h3>
+                            Recent Projects
+                        </h3>
+
 
                         <p>
                             Your latest work and experiments.
                         </p>
+
                     </div>
 
-                    <button class="primary-button">
+
+                    <button class="primary-button" type="button" onclick="openProjectModal()">
                         + New Project
                     </button>
 
                 </div>
 
 
+                <!-- PROJECTS -->
+
                 <div class="projects">
+
 
                     {% for project in projects %}
 
                     <article class="project-card">
+
 
                         <div class="project-header">
 
@@ -245,37 +677,55 @@
                                 ⚡
                             </div>
 
+
                             <span class="project-status">
                                 {{ project.status }}
                             </span>
 
                         </div>
 
-                        <h3>{{ project.name }}</h3>
+
+                        <h3>
+                            {{ project.name }}
+                        </h3>
+
 
                         <p>
                             {{ project.description }}
                         </p>
 
+
                         <div class="tech-stack">
 
                             {% for tech in project.technology.split(",") %}
-                            <span>{{ tech.strip() }}</span>
+
+                            <span>
+                                {{ tech.strip() }}
+                            </span>
+
                             {% endfor %}
 
                         </div>
 
+
                         <div class="project-footer">
 
                             <span class="project-path">
-                                <code>~/my-tech-lab</code>
+
+                                <code>
+                                    ~/my-tech-lab
+                                </code>
+
                             </span>
 
+
                             <form action="/projects/{{ project.id }}/delete" method="post" style="display:inline;">
+
                                 <button type="submit" class="open-link"
                                     onclick="return confirm('Delete this project?')">
                                     Delete
                                 </button>
+
                             </form>
 
                         </div>
@@ -285,20 +735,27 @@
                     {% endfor %}
 
 
+                    <!-- CREATE NEW PROJECT CARD -->
+
                     <article class="project-card empty-card">
 
                         <div class="empty-icon">
                             +
                         </div>
 
-                        <h3>Create something new</h3>
+
+                        <h3>
+                            Create something new
+                        </h3>
+
 
                         <p>
                             Start your next experiment,
                             application or automation project.
                         </p>
 
-                        <button class="secondary-button">
+
+                        <button class="secondary-button" type="button" onclick="openProjectModal()">
                             Create Project
                         </button>
 
@@ -307,20 +764,30 @@
                 </div>
 
 
-                <!-- Terminal -->
+                <!-- =================================================
+                     TERMINAL
+                     ================================================= -->
+
                 <section class="terminal-section">
+
 
                     <div class="terminal-header">
 
                         <div class="terminal-title">
+
                             <span class="terminal-dot red"></span>
+
                             <span class="terminal-dot yellow"></span>
+
                             <span class="terminal-dot green"></span>
+
 
                             <span class="terminal-name">
                                 terminal
                             </span>
+
                         </div>
+
 
                         <span class="terminal-status">
                             READY
@@ -331,23 +798,43 @@
 
                     <div class="terminal-body">
 
+
                         <div>
+
                             <span class="terminal-prompt">
                                 malume@tech-lab
                             </span>
-                            <span class="terminal-symbol">:</span>
-                            <span class="terminal-path">~/my-tech-lab</span>
-                            <span class="terminal-symbol">$</span>
+
+                            <span class="terminal-symbol">
+                                :
+                            </span>
+
+                            <span class="terminal-path">
+                                ~/my-tech-lab
+                            </span>
+
+                            <span class="terminal-symbol">
+                                $
+                            </span>
+
                         </div>
+
 
                         <div class="terminal-command">
                             fastapi dev app/main.py
                         </div>
 
+
                         <div class="terminal-output">
-                            <span class="success">✓</span>
+
+                            <span class="success">
+                                ✓
+                            </span>
+
                             MY TECH LAB development environment ready.
+
                         </div>
+
 
                         <div class="terminal-cursor">
                             _
@@ -360,13 +847,21 @@
             </section>
 
 
+            <!-- =================================================
+                 FOOTER
+                 ================================================= -->
+
             <footer class="footer">
 
                 <span>
                     © 2026 MY TECH LAB
                 </span>
 
-                <span class="footer-separator">•</span>
+
+                <span class="footer-separator">
+                    •
+                </span>
+
 
                 <span>
                     Built with Python + FastAPI
@@ -377,6 +872,182 @@
         </main>
 
     </div>
+
+
+    <!-- =====================================================
+         NEW PROJECT MODAL
+         ===================================================== -->
+
+    <div id="projectModal" class="modal-overlay" onclick="closeProjectModal(event)">
+
+        <div class="project-modal" onclick="event.stopPropagation()">
+
+
+            <!-- MODAL HEADER -->
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        DEVELOPMENT
+                    </span>
+
+
+                    <h2>
+                        New Project
+                    </h2>
+
+
+                    <p>
+                        Create a new project in your workspace.
+                    </p>
+
+                </div>
+
+
+                <button type="button" class="modal-close" onclick="closeProjectModal()" aria-label="Close">
+                    ×
+                </button>
+
+            </div>
+
+
+            <!-- PROJECT FORM -->
+
+            <form action="/projects/create" method="post" class="project-form">
+
+
+                <div class="form-group">
+
+                    <label for="project-name">
+                        Project Name
+                    </label>
+
+
+                    <input id="project-name" name="name" type="text" placeholder="e.g. AI Assistant" autocomplete="off"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="project-description">
+                        Description
+                    </label>
+
+
+                    <textarea id="project-description" name="description" placeholder="Describe what you're building..."
+                        rows="4"></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="project-technology">
+                        Technology Stack
+                    </label>
+
+
+                    <input id="project-technology" name="technology" type="text"
+                        placeholder="Python, FastAPI, PostgreSQL" autocomplete="off">
+
+
+                    <small>
+                        Separate technologies with commas.
+                    </small>
+
+                </div>
+
+
+                <!-- FORM ACTIONS -->
+
+                <div class="form-actions">
+
+
+                    <button type="button" class="secondary-button" onclick="closeProjectModal()">
+                        Cancel
+                    </button>
+
+
+                    <button type="submit" class="primary-button">
+                        Create Project
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script>
+
+        function openProjectModal() {
+
+            const modal =
+                document.getElementById("projectModal");
+
+            if (!modal) {
+                console.error("Project modal not found.");
+                return;
+            }
+
+            modal.classList.add("active");
+
+            const nameInput =
+                document.getElementById("project-name");
+
+            if (nameInput) {
+                setTimeout(function () {
+                    nameInput.focus();
+                }, 100);
+            }
+
+        }
+
+
+        function closeProjectModal(event) {
+
+            if (
+                event &&
+                event.target !== event.currentTarget
+            ) {
+                return;
+            }
+
+            const modal =
+                document.getElementById("projectModal");
+
+            if (!modal) {
+                return;
+            }
+
+            modal.classList.remove("active");
+
+        }
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+                    closeProjectModal();
+                }
+
+            }
+        );
+
+    </script>
 
 </body>
 

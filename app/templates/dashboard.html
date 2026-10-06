@@ -1,1054 +1,1939 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta name="description" content="MY TECH LAB - Personal technology, research and automation laboratory.">
 
     <title>MY TECH LAB</title>
 
-    <!-- Modern fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-        rel="stylesheet">
-
-    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
-
     <style>
-        /* =====================================================
-           PROJECT MODAL
-           ===================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        .modal-overlay {
+        :root {
+            --bg: #080b10;
+            --panel: #0e131b;
+            --panel-2: #121923;
+            --border: #1d2733;
+            --text: #eef3f8;
+            --muted: #7f8b99;
+            --accent: #63e6be;
+            --accent-soft: rgba(99, 230, 190, 0.10);
+            --blue: #69a7ff;
+            --warning: #f5c451;
+            --danger: #ff6b7a;
+        }
+
+        body {
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+                         BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        button,
+        input,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* ------------------------------------------------
+           APP SHELL
+        ------------------------------------------------ */
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ------------------------------------------------
+           SIDEBAR
+        ------------------------------------------------ */
+
+        .sidebar {
+            width: 250px;
+            background: #090d13;
+            border-right: 1px solid var(--border);
+            padding: 24px 16px;
             position: fixed;
-            inset: 0;
+            inset: 0 auto 0 0;
+            z-index: 100;
+        }
 
+        .brand {
             display: flex;
             align-items: center;
-            justify-content: center;
-
-            padding: 24px;
-
-            background: rgba(0, 0, 0, 0.72);
-
-            backdrop-filter: blur(8px);
-
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-
-            transition:
-                opacity 0.2s ease,
-                visibility 0.2s ease;
-
-            z-index: 9999;
+            gap: 11px;
+            padding: 4px 10px 30px;
         }
 
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-        }
-
-
-        .project-modal {
-            width: min(560px, 100%);
-
-            background: #101621;
-
-            border: 1px solid #202b3d;
-
-            border-radius: 18px;
-
-            box-shadow:
-                0 25px 80px rgba(0, 0, 0, 0.55);
-
-            transform: translateY(20px) scale(0.98);
-
-            transition:
-                transform 0.2s ease;
-        }
-
-
-        .modal-overlay.active .project-modal {
-            transform: translateY(0) scale(1);
-        }
-
-
-        .modal-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-
-            gap: 20px;
-
-            padding: 28px 28px 20px;
-
-            border-bottom: 1px solid #202b3d;
-        }
-
-
-        .modal-header h2 {
-            margin: 6px 0 6px;
-
-            color: #ffffff;
-
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-
-        .modal-header p {
-            margin: 0;
-
-            color: #8b95a7;
-
+        .brand-mark {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--accent);
+            display: grid;
+            place-items: center;
+            color: var(--accent);
             font-size: 14px;
+            box-shadow: 0 0 18px rgba(99, 230, 190, 0.12);
         }
 
+        .brand-name {
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+        }
 
-        .modal-close {
-            width: 36px;
-            height: 36px;
+        .brand-sub {
+            color: var(--muted);
+            font-size: 8px;
+            letter-spacing: 1.8px;
+            margin-top: 2px;
+        }
 
-            border: 1px solid #263247;
+        .nav-section {
+            margin-bottom: 25px;
+        }
 
-            border-radius: 10px;
+        .nav-label {
+            color: #4f5b68;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            padding: 0 11px 9px;
+        }
 
+        .nav-item {
+            width: 100%;
+            border: 0;
             background: transparent;
-
-            color: #9ca7b8;
-
-            font-size: 24px;
-            line-height: 1;
-
-            cursor: pointer;
-
-            transition:
-                background 0.2s ease,
-                color 0.2s ease,
-                border-color 0.2s ease;
+            color: #8995a3;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px;
+            border-radius: 7px;
+            margin-bottom: 3px;
+            text-align: left;
+            transition: 0.2s ease;
         }
 
-
-        .modal-close:hover {
-            background: #192233;
-
-            border-color: #34435c;
-
-            color: #ffffff;
+        .nav-item:hover {
+            color: var(--text);
+            background: #111720;
         }
 
-
-        .project-form {
-            padding: 24px 28px 28px;
+        .nav-item.active {
+            color: var(--accent);
+            background: var(--accent-soft);
         }
 
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-
-        .form-group label {
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #dce3ee;
-
+        .nav-icon {
+            width: 17px;
+            text-align: center;
             font-size: 13px;
+        }
+
+        .nav-text {
+            font-size: 12px;
             font-weight: 600;
         }
 
+        .sidebar-bottom {
+            position: absolute;
+            bottom: 20px;
+            left: 16px;
+            right: 16px;
+        }
+
+        .system-status {
+            border: 1px solid var(--border);
+            background: #0d1219;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+        }
+
+        .status-label {
+            color: var(--muted);
+        }
+
+        .status-online {
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        /* ------------------------------------------------
+           MAIN
+        ------------------------------------------------ */
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 70px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 34px;
+            background: rgba(8, 11, 16, 0.88);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-title {
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: 1.2px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .system-pill {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--accent);
+            font-size: 10px;
+            letter-spacing: 0.8px;
+        }
+
+        .user-pill {
+            border-left: 1px solid var(--border);
+            padding-left: 16px;
+            color: #aeb8c4;
+            font-size: 11px;
+        }
+
+        .content {
+            padding: 34px;
+            max-width: 1600px;
+        }
+
+        /* ------------------------------------------------
+           VIEWS
+        ------------------------------------------------ */
+
+        .view {
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ------------------------------------------------
+           HEADINGS
+        ------------------------------------------------ */
+
+        .page-heading {
+            margin-bottom: 30px;
+        }
+
+        .eyebrow {
+            color: var(--accent);
+            font-size: 9px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .page-heading h1 {
+            font-size: 27px;
+            letter-spacing: -0.7px;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            font-size: 12px;
+            max-width: 650px;
+            line-height: 1.6;
+        }
+
+        /* ------------------------------------------------
+           STAT CARDS
+        ------------------------------------------------ */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 19px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            right: -30px;
+            bottom: -35px;
+            border-radius: 50%;
+            background: rgba(99, 230, 190, 0.05);
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+        }
+
+        .stat-number {
+            font-size: 27px;
+            font-weight: 750;
+            margin-top: 8px;
+        }
+
+        .stat-meta {
+            margin-top: 6px;
+            color: #596573;
+            font-size: 9px;
+        }
+
+        /* ------------------------------------------------
+           GRID
+        ------------------------------------------------ */
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 17px 19px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-title {
+            font-size: 11px;
+            font-weight: 750;
+            letter-spacing: 0.8px;
+        }
+
+        .panel-link {
+            border: 0;
+            background: transparent;
+            color: var(--accent);
+            font-size: 9px;
+        }
+
+        .panel-body {
+            padding: 19px;
+        }
+
+        /* ------------------------------------------------
+           FEEDS
+        ------------------------------------------------ */
+
+        .feed-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feed-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 0;
+            border-bottom: 1px solid #18212b;
+        }
+
+        .feed-row:last-child {
+            border-bottom: 0;
+        }
+
+        .feed-left {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .feed-symbol {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #27323e;
+            border-radius: 6px;
+            display: grid;
+            place-items: center;
+            color: var(--accent);
+            font-size: 10px;
+        }
+
+        .feed-name {
+            font-size: 11px;
+            font-weight: 650;
+        }
+
+        .feed-domain {
+            color: #596573;
+            font-size: 9px;
+            margin-top: 3px;
+        }
+
+        .feed-stats {
+            text-align: right;
+            color: #687584;
+            font-size: 9px;
+        }
+
+        .feed-active {
+            color: var(--accent);
+            font-size: 8px;
+            letter-spacing: 0.8px;
+        }
+
+        /* ------------------------------------------------
+           EMPTY STATES
+        ------------------------------------------------ */
+
+        .empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+        }
+
+        .empty-icon {
+            font-size: 22px;
+            margin-bottom: 10px;
+            opacity: 0.45;
+        }
+
+        .empty-title {
+            color: #a9b3be;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .empty-text {
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        /* ------------------------------------------------
+           ACTIVITY
+        ------------------------------------------------ */
+
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #18212b;
+        }
+
+        .activity-item:last-child {
+            border-bottom: 0;
+        }
+
+        .activity-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--blue);
+            margin-top: 4px;
+        }
+
+        .activity-text {
+            font-size: 10px;
+            color: #aeb7c1;
+            line-height: 1.5;
+        }
+
+        .activity-time {
+            color: #53606d;
+            font-size: 8px;
+            margin-top: 3px;
+        }
+
+        /* ------------------------------------------------
+           RESEARCH FEED CARDS
+        ------------------------------------------------ */
+
+        .feed-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .research-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 20px;
+            transition: 0.2s ease;
+        }
+
+        .research-card:hover {
+            border-color: #304050;
+            transform: translateY(-2px);
+        }
+
+        .research-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+
+        .research-card-icon {
+            width: 38px;
+            height: 38px;
+            border: 1px solid #293541;
+            border-radius: 7px;
+            display: grid;
+            place-items: center;
+            color: var(--accent);
+        }
+
+        .badge {
+            border: 1px solid rgba(99, 230, 190, 0.2);
+            color: var(--accent);
+            background: rgba(99, 230, 190, 0.05);
+            padding: 4px 7px;
+            border-radius: 4px;
+            font-size: 8px;
+            letter-spacing: 0.8px;
+        }
+
+        .research-card h3 {
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        .research-card p {
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.6;
+            min-height: 34px;
+        }
+
+        .research-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .metric {
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+        }
+
+        .metric-value {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .metric-label {
+            color: #596573;
+            font-size: 8px;
+            margin-top: 3px;
+        }
+
+        /* ------------------------------------------------
+           REPORTS
+        ------------------------------------------------ */
+
+        .report-row {
+            padding: 16px 0;
+            border-bottom: 1px solid #18212b;
+        }
+
+        .report-row:last-child {
+            border-bottom: 0;
+        }
+
+        .report-title {
+            font-size: 12px;
+            font-weight: 650;
+            margin-bottom: 5px;
+        }
+
+        .report-meta {
+            color: #5f6b78;
+            font-size: 9px;
+        }
+
+        /* ------------------------------------------------
+           PROJECTS
+        ------------------------------------------------ */
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .project-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 19px;
+        }
+
+        .project-card h3 {
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .project-card p {
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.6;
+            min-height: 38px;
+        }
+
+        .project-tech {
+            margin-top: 14px;
+            color: var(--blue);
+            font-size: 9px;
+        }
+
+        .project-status {
+            margin-top: 15px;
+            display: inline-block;
+            font-size: 8px;
+            color: var(--accent);
+            border: 1px solid rgba(99, 230, 190, 0.2);
+            padding: 4px 7px;
+            border-radius: 4px;
+        }
+
+        .project-actions {
+            margin-top: 15px;
+        }
+
+        .delete-btn {
+            border: 1px solid #332027;
+            background: transparent;
+            color: var(--danger);
+            padding: 6px 9px;
+            border-radius: 5px;
+            font-size: 9px;
+        }
+
+        /* ------------------------------------------------
+           BUTTONS
+        ------------------------------------------------ */
+
+        .primary-btn {
+            border: 1px solid rgba(99, 230, 190, 0.3);
+            background: var(--accent-soft);
+            color: var(--accent);
+            padding: 9px 13px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 650;
+        }
+
+        .primary-btn:hover {
+            background: rgba(99, 230, 190, 0.16);
+        }
+
+        /* ------------------------------------------------
+           MODAL
+        ------------------------------------------------ */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+            z-index: 500;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 500px;
+            background: #0d131b;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 23px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 22px;
+        }
+
+        .modal-header h2 {
+            font-size: 15px;
+        }
+
+        .close-btn {
+            border: 0;
+            background: transparent;
+            color: var(--muted);
+            font-size: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #798592;
+            font-size: 9px;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-
-            box-sizing: border-box;
-
-            padding: 12px 14px;
-
-            border: 1px solid #273449;
-
-            border-radius: 10px;
-
-            background: #0a0f18;
-
-            color: #ffffff;
-
-            font-family: "Inter", sans-serif;
-
-            font-size: 14px;
-
+            border: 1px solid var(--border);
+            background: #090e14;
+            color: var(--text);
+            border-radius: 6px;
+            padding: 10px;
             outline: none;
-
-            transition:
-                border-color 0.2s ease,
-                box-shadow 0.2s ease,
-                background 0.2s ease;
+            font-size: 11px;
         }
-
 
         .form-group textarea {
+            min-height: 80px;
             resize: vertical;
-
-            min-height: 100px;
         }
-
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: #596579;
-        }
-
 
         .form-group input:focus,
         .form-group textarea:focus {
-            border-color: #4f8cff;
-
-            background: #0c121d;
-
-            box-shadow:
-                0 0 0 3px rgba(79, 140, 255, 0.12);
+            border-color: #38584f;
         }
-
-
-        .form-group small {
-            display: block;
-
-            margin-top: 7px;
-
-            color: #69758a;
-
-            font-size: 12px;
-        }
-
 
         .form-actions {
             display: flex;
-
             justify-content: flex-end;
-
-            gap: 10px;
-
-            padding-top: 6px;
+            gap: 9px;
+            margin-top: 20px;
         }
 
-
-        .form-actions button {
-            min-width: 110px;
+        .cancel-btn {
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            padding: 9px 13px;
+            border-radius: 6px;
+            font-size: 10px;
         }
 
+        /* ------------------------------------------------
+           RESPONSIVE
+        ------------------------------------------------ */
 
-        /* =====================================================
-           MOBILE MODAL
-           ===================================================== */
-
-        @media (max-width: 600px) {
-
-            .modal-overlay {
-                padding: 14px;
+        @media (max-width: 1000px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-
-            .project-modal {
-                border-radius: 14px;
+            .grid-2 {
+                grid-template-columns: 1fr;
             }
 
+            .feed-grid,
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 
-            .modal-header {
-                padding: 22px 20px 18px;
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 70px;
+                padding: 20px 8px;
             }
 
+            .brand {
+                justify-content: center;
+                padding-left: 0;
+                padding-right: 0;
+            }
 
-            .project-form {
+            .brand-name,
+            .brand-sub,
+            .nav-label,
+            .nav-text,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .nav-item {
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
                 padding: 20px;
             }
 
-
-            .form-actions {
-                flex-direction: column-reverse;
+            .stats {
+                grid-template-columns: 1fr 1fr;
             }
-
-
-            .form-actions button {
-                width: 100%;
-            }
-
         }
     </style>
-
 </head>
-
 
 <body>
 
-    <div class="app">
+<div class="app">
 
-        <!-- =================================================
-             SIDEBAR
-             ================================================= -->
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
 
-        <aside class="sidebar">
+    <aside class="sidebar">
 
-            <div class="brand">
+        <div class="brand">
+            <div class="brand-mark">◈</div>
 
-                <div class="brand-icon">
-                    ⚡
-                </div>
+            <div>
+                <div class="brand-name">MY TECH LAB</div>
+                <div class="brand-sub">INTELLIGENCE SYSTEM</div>
+            </div>
+        </div>
 
-                <div>
-                    <h1>MY TECH LAB</h1>
+        <div class="nav-section">
 
-                    <span>
-                        Developer Workspace
+            <div class="nav-label">COMMAND</div>
+
+            <button class="nav-item active" data-view="dashboard">
+                <span class="nav-icon">◉</span>
+                <span class="nav-text">Dashboard</span>
+            </button>
+
+        </div>
+
+        <div class="nav-section">
+
+            <div class="nav-label">INTELLIGENCE</div>
+
+            <button class="nav-item" data-view="research">
+                <span class="nav-icon">◇</span>
+                <span class="nav-text">Research</span>
+            </button>
+
+            <button class="nav-item" data-view="signals">
+                <span class="nav-icon">⌁</span>
+                <span class="nav-text">Signals</span>
+            </button>
+
+            <button class="nav-item" data-view="opportunities">
+                <span class="nav-icon">◆</span>
+                <span class="nav-text">Opportunities</span>
+            </button>
+
+        </div>
+
+        <div class="nav-section">
+
+            <div class="nav-label">MARKETS</div>
+
+            <button class="nav-item">
+                <span class="nav-icon">◈</span>
+                <span class="nav-text">DSE</span>
+            </button>
+
+            <button class="nav-item">
+                <span class="nav-icon">₿</span>
+                <span class="nav-text">Crypto</span>
+            </button>
+
+            <button class="nav-item">
+                <span class="nav-icon">⌁</span>
+                <span class="nav-text">Macro</span>
+            </button>
+
+        </div>
+
+        <div class="nav-section">
+
+            <div class="nav-label">BUILD</div>
+
+            <button class="nav-item" data-view="projects">
+                <span class="nav-icon">□</span>
+                <span class="nav-text">Projects</span>
+            </button>
+
+        </div>
+
+        <div class="sidebar-bottom">
+
+            <div class="system-status">
+
+                <div class="status-row">
+                    <span class="status-label">SYSTEM</span>
+
+                    <span class="status-online">
+                        <span class="dot"></span>
+                        ONLINE
                     </span>
                 </div>
 
             </div>
 
+        </div>
 
-            <nav class="navigation">
-
-                <p class="nav-label">
-                    WORKSPACE
-                </p>
+    </aside>
 
 
-                <a href="#" class="nav-item active">
+    <!-- =================================================
+         MAIN
+    ================================================== -->
 
-                    <span class="nav-icon">
-                        ⌂
-                    </span>
+    <main class="main">
 
-                    <span>
-                        Dashboard
-                    </span>
+        <header class="topbar">
 
-                </a>
+            <div class="topbar-title">
+                INTELLIGENCE COMMAND CENTER
+            </div>
 
+            <div class="topbar-right">
 
-                <a href="#" class="nav-item">
-
-                    <span class="nav-icon">
-                        ◈
-                    </span>
-
-                    <span>
-                        Projects
-                    </span>
-
-                </a>
-
-
-                <a href="#" class="nav-item">
-
-                    <span class="nav-icon">
-                        ⚙
-                    </span>
-
-                    <span>
-                        Tools
-                    </span>
-
-                </a>
-
-
-                <a href="#" class="nav-item">
-
-                    <span class="nav-icon">
-                        &lt;/&gt;
-                    </span>
-
-                    <span>
-                        APIs
-                    </span>
-
-                </a>
-
-
-                <p class="nav-label">
-                    SYSTEM
-                </p>
-
-
-                <a href="#" class="nav-item">
-
-                    <span class="nav-icon">
-                        ▣
-                    </span>
-
-                    <span>
-                        Database
-                    </span>
-
-                </a>
-
-
-                <a href="#" class="nav-item">
-
-                    <span class="nav-icon">
-                        ↗
-                    </span>
-
-                    <span>
-                        Analytics
-                    </span>
-
-                </a>
-
-
-                <a href="#" class="nav-item">
-
-                    <span class="nav-icon">
-                        ⚙
-                    </span>
-
-                    <span>
-                        Settings
-                    </span>
-
-                </a>
-
-            </nav>
-
-
-            <div class="sidebar-footer">
-
-                <div class="status-indicator">
-
-                    <span class="status-dot"></span>
-
-                    <div>
-
-                        <strong>
-                            System Online
-                        </strong>
-
-                        <small>
-                            All systems operational
-                        </small>
-
-                    </div>
-
+                <div class="system-pill">
+                    <span class="dot"></span>
+                    ALL SYSTEMS NOMINAL
                 </div>
 
-
-                <div class="version">
-
-                    MY TECH LAB
-                    <span>
-                        v1.0.0
-                    </span>
-
+                <div class="user-pill">
+                    {{ user }}
                 </div>
 
             </div>
 
-        </aside>
+        </header>
 
 
-        <!-- =================================================
-             MAIN CONTENT
-             ================================================= -->
-
-        <main class="main-content">
-
-
-            <!-- TOP BAR -->
-
-            <header class="topbar">
-
-                <div>
-
-                    <p class="breadcrumb">
-                        WORKSPACE / DASHBOARD
-                    </p>
-
-
-                    <h2>
-                        Good evening, {{ user }}.
-                    </h2>
-
-
-                    <p class="welcome-text">
-                        Welcome back to your technology laboratory.
-                    </p>
-
-                </div>
-
-
-                <div class="topbar-actions">
-
-                    <button class="icon-button" title="Notifications" type="button">
-                        ◌
-                    </button>
-
-
-                    <div class="avatar">
-                        ML
-                    </div>
-
-                </div>
-
-            </header>
+        <div class="content">
 
 
             <!-- =================================================
                  DASHBOARD
-                 ================================================= -->
+            ================================================== -->
 
-            <section class="dashboard">
+            <section id="dashboard" class="view active">
+
+                <div class="page-heading">
+
+                    <div class="eyebrow">
+                        COMMAND CENTER
+                    </div>
+
+                    <h1>Good afternoon, {{ user }}.</h1>
+
+                    <p>
+                        Your intelligence system at a glance.
+                        Monitor research, signals, opportunities and active builds.
+                    </p>
+
+                </div>
 
 
-                <!-- STATS -->
-
-                <div class="stats-grid">
-
+                <div class="stats">
 
                     <div class="stat-card">
+                        <div class="stat-label">Research Feeds</div>
+                        <div class="stat-number">
+                            {{ research_feeds|length }}
+                        </div>
+                        <div class="stat-meta">
+                            Registered intelligence sources
+                        </div>
+                    </div>
 
-                        <div class="stat-top">
+                    <div class="stat-card">
+                        <div class="stat-label">Research Reports</div>
+                        <div class="stat-number">
+                            {{ research_report_count }}
+                        </div>
+                        <div class="stat-meta">
+                            Raw intelligence collected
+                        </div>
+                    </div>
 
-                            <span class="stat-label">
-                                PROJECTS
-                            </span>
+                    <div class="stat-card">
+                        <div class="stat-label">Observations</div>
+                        <div class="stat-number">
+                            {{ research_count }}
+                        </div>
+                        <div class="stat-meta">
+                            Structured facts discovered
+                        </div>
+                    </div>
 
-                            <span class="stat-icon blue">
-                                ◈
-                            </span>
+                    <div class="stat-card">
+                        <div class="stat-label">Opportunities</div>
+                        <div class="stat-number">
+                            {{ opportunity_count }}
+                        </div>
+                        <div class="stat-meta">
+                            Candidate opportunities
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="grid-2">
+
+                    <!-- RESEARCH STREAM -->
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+
+                            <div class="panel-title">
+                                INTELLIGENCE STREAM
+                            </div>
+
+                            <button
+                                class="panel-link"
+                                onclick="switchView('research')"
+                            >
+                                OPEN RESEARCH →
+                            </button>
 
                         </div>
 
+                        <div class="panel-body">
 
-                        <div class="stat-value">
-                            {{ "%02d"|format(project_count) }}
+                            {% if research_feeds %}
+
+                            <div class="feed-list">
+
+                                {% for feed in research_feeds %}
+
+                                <div class="feed-row">
+
+                                    <div class="feed-left">
+
+                                        <div class="feed-symbol">
+                                            {{ loop.index }}
+                                        </div>
+
+                                        <div>
+
+                                            <div class="feed-name">
+                                                {{ feed.name }}
+                                            </div>
+
+                                            <div class="feed-domain">
+                                                {{ feed.domain }}
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="feed-stats">
+
+                                        <div class="feed-active">
+                                            ● ACTIVE
+                                        </div>
+
+                                        <div>
+                                            {{ feed.report_count }}
+                                            reports
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            {% else %}
+
+                            <div class="empty">
+
+                                <div class="empty-icon">◇</div>
+
+                                <div class="empty-title">
+                                    No research feeds
+                                </div>
+
+                                <div class="empty-text">
+                                    Intelligence sources will appear here.
+                                </div>
+
+                            </div>
+
+                            {% endif %}
+
                         </div>
-
-
-                        <p>
-                            <span class="positive">
-                                ↑ Active
-                            </span>
-
-                            development
-                        </p>
 
                     </div>
 
 
-                    <div class="stat-card">
+                    <!-- PRIORITY SIGNALS -->
 
-                        <div class="stat-top">
+                    <div class="panel">
 
-                            <span class="stat-label">
-                                APIs
-                            </span>
+                        <div class="panel-header">
 
-                            <span class="stat-icon purple">
-                                &lt;/&gt;
-                            </span>
+                            <div class="panel-title">
+                                PRIORITY SIGNALS
+                            </div>
 
-                        </div>
-
-
-                        <div class="stat-value">
-                            00
-                        </div>
-
-
-                        <p>
-                            Ready to build
-                        </p>
-
-                    </div>
-
-
-                    <div class="stat-card">
-
-                        <div class="stat-top">
-
-                            <span class="stat-label">
-                                TOOLS
-                            </span>
-
-                            <span class="stat-icon green">
-                                ⚙
-                            </span>
+                            <button
+                                class="panel-link"
+                                onclick="switchView('signals')"
+                            >
+                                OPEN →
+                            </button>
 
                         </div>
 
+                        <div class="panel-body">
 
-                        <div class="stat-value">
-                            00
-                        </div>
+                            <div class="empty">
 
+                                <div class="empty-icon">⌁</div>
 
-                        <p>
-                            Available utilities
-                        </p>
+                                <div class="empty-title">
+                                    Signal Engine initializing
+                                </div>
 
-                    </div>
+                                <div class="empty-text">
+                                    Once research observations accumulate,
+                                    the system will begin looking for changes,
+                                    anomalies and converging signals.
+                                </div>
 
-
-                    <div class="stat-card">
-
-                        <div class="stat-top">
-
-                            <span class="stat-label">
-                                STATUS
-                            </span>
-
-                            <span class="stat-icon green">
-                                ●
-                            </span>
+                            </div>
 
                         </div>
-
-
-                        <div class="stat-value online">
-                            ONLINE
-                        </div>
-
-
-                        <p>
-                            System operational
-                        </p>
 
                     </div>
 
                 </div>
 
 
-                <!-- =================================================
-                     PROJECT SECTION
-                     ================================================= -->
+                <!-- SYSTEM ACTIVITY -->
 
-                <div class="section-header">
+                <div class="panel">
 
-                    <div>
+                    <div class="panel-header">
 
-                        <span class="section-eyebrow">
-                            DEVELOPMENT
-                        </span>
+                        <div class="panel-title">
+                            SYSTEM ACTIVITY
+                        </div>
 
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="activity-item">
+
+                            <div class="activity-dot"></div>
+
+                            <div>
+
+                                <div class="activity-text">
+                                    Research Feed Registry is operational.
+                                </div>
+
+                                <div class="activity-time">
+                                    SYSTEM
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="activity-item">
+
+                            <div class="activity-dot"></div>
+
+                            <div>
+
+                                <div class="activity-text">
+                                    {{ research_feeds|length }}
+                                    intelligence feeds registered.
+                                </div>
+
+                                <div class="activity-time">
+                                    RESEARCH
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="activity-item">
+
+                            <div class="activity-dot"></div>
+
+                            <div>
+
+                                <div class="activity-text">
+                                    Signal Engine awaiting structured research observations.
+                                </div>
+
+                                <div class="activity-time">
+                                    INTELLIGENCE
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 RESEARCH
+            ================================================== -->
+
+            <section id="research" class="view">
+
+                <div class="page-heading">
+
+                    <div class="eyebrow">
+                        INTELLIGENCE / RESEARCH
+                    </div>
+
+                    <h1>Research Hub</h1>
+
+                    <p>
+                        The raw intelligence layer of MY TECH LAB.
+                        Research records facts and observations before the
+                        Signal Engine decides what matters.
+                    </p>
+
+                </div>
+
+
+                <div class="feed-grid">
+
+                    {% for feed in research_feeds %}
+
+                    <div class="research-card">
+
+                        <div class="research-card-top">
+
+                            <div class="research-card-icon">
+                                {{ loop.index }}
+                            </div>
+
+                            <div class="badge">
+                                {{ feed.status }}
+                            </div>
+
+                        </div>
 
                         <h3>
-                            Recent Projects
+                            {{ feed.name }}
                         </h3>
 
-
                         <p>
-                            Your latest work and experiments.
+                            {{ feed.description }}
                         </p>
+
+                        <div class="research-metrics">
+
+                            <div class="metric">
+                                <div class="metric-value">
+                                    {{ feed.report_count }}
+                                </div>
+
+                                <div class="metric-label">
+                                    REPORTS
+                                </div>
+                            </div>
+
+                            <div class="metric">
+                                <div class="metric-value">
+                                    {{ feed.observation_count }}
+                                </div>
+
+                                <div class="metric-label">
+                                    OBSERVATIONS
+                                </div>
+                            </div>
+
+                            <div class="metric">
+                                <div class="metric-value">
+                                    {{ feed.domain }}
+                                </div>
+
+                                <div class="metric-label">
+                                    DOMAIN
+                                </div>
+                            </div>
+
+                        </div>
 
                     </div>
 
-
-                    <button class="primary-button" type="button" onclick="openProjectModal()">
-                        + New Project
-                    </button>
+                    {% endfor %}
 
                 </div>
 
 
-                <!-- PROJECTS -->
+                <!-- REPORTS -->
 
-                <div class="projects">
+                <div class="panel" style="margin-top: 20px;">
 
+                    <div class="panel-header">
+
+                        <div class="panel-title">
+                            RECENT RESEARCH REPORTS
+                        </div>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        {% if research_reports %}
+
+                            {% for report in research_reports|reverse %}
+
+                            <div class="report-row">
+
+                                <div class="report-title">
+                                    {{ report.title }}
+                                </div>
+
+                                <div class="report-meta">
+                                    {{ report.feed }}
+                                    ·
+                                    {{ report.domain }}
+                                    ·
+                                    {{ report.report_date }}
+                                </div>
+
+                            </div>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <div class="empty">
+
+                                <div class="empty-icon">◇</div>
+
+                                <div class="empty-title">
+                                    No reports received yet
+                                </div>
+
+                                <div class="empty-text">
+                                    Your automated research feeds will eventually
+                                    deliver reports into this workspace.
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- OBSERVATIONS -->
+
+                <div class="panel" style="margin-top: 20px;">
+
+                    <div class="panel-header">
+
+                        <div class="panel-title">
+                            RESEARCH OBSERVATIONS
+                        </div>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        {% if research %}
+
+                            {% for item in research|reverse %}
+
+                            <div class="report-row">
+
+                                <div class="report-title">
+                                    {{ item.observation }}
+                                </div>
+
+                                <div class="report-meta">
+                                    {{ item.source }}
+                                    ·
+                                    {{ item.domain }}
+                                    ·
+                                    Importance {{ item.importance }}/10
+                                </div>
+
+                            </div>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <div class="empty">
+
+                                <div class="empty-icon">⌁</div>
+
+                                <div class="empty-title">
+                                    No structured observations yet
+                                </div>
+
+                                <div class="empty-text">
+                                    Observations will appear here after reports
+                                    are processed by the research ingestion layer.
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SIGNALS
+            ================================================== -->
+
+            <section id="signals" class="view">
+
+                <div class="page-heading">
+
+                    <div class="eyebrow">
+                        INTELLIGENCE / SIGNAL ENGINE
+                    </div>
+
+                    <h1>Signals</h1>
+
+                    <p>
+                        The system's pattern-detection layer.
+                        Signals will emerge when multiple observations reveal
+                        meaningful changes, anomalies or convergence.
+                    </p>
+
+                </div>
+
+                <div class="panel">
+
+                    <div class="panel-body">
+
+                        <div class="empty">
+
+                            <div class="empty-icon">⌁</div>
+
+                            <div class="empty-title">
+                                Signal Engine not active yet
+                            </div>
+
+                            <div class="empty-text">
+                                Research ingestion comes first.
+                                Once enough structured observations exist,
+                                we'll build the actual signal-detection engine.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 OPPORTUNITIES
+            ================================================== -->
+
+            <section id="opportunities" class="view">
+
+                <div class="page-heading">
+
+                    <div class="eyebrow">
+                        INTELLIGENCE / OPPORTUNITY ENGINE
+                    </div>
+
+                    <h1>Opportunities</h1>
+
+                    <p>
+                        Potential ways to create, capture or invest capital
+                        discovered from research and signals.
+                    </p>
+
+                </div>
+
+                {% if opportunities %}
+
+                <div class="feed-grid">
+
+                    {% for opportunity in opportunities %}
+
+                    <div class="research-card">
+
+                        <div class="research-card-top">
+
+                            <div class="research-card-icon">
+                                ◆
+                            </div>
+
+                        </div>
+
+                        <h3>
+                            {{ opportunity.name }}
+                        </h3>
+
+                        <p>
+                            {{ opportunity.description }}
+                        </p>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                {% else %}
+
+                <div class="panel">
+
+                    <div class="panel-body">
+
+                        <div class="empty">
+
+                            <div class="empty-icon">◆</div>
+
+                            <div class="empty-title">
+                                Opportunity Engine waiting
+                            </div>
+
+                            <div class="empty-text">
+                                Opportunities will be generated from meaningful
+                                research signals. We deliberately don't create
+                                opportunities manually.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </section>
+
+
+            <!-- =================================================
+                 PROJECTS
+            ================================================== -->
+
+            <section id="projects" class="view">
+
+                <div class="page-heading">
+
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:flex-end;
+                        gap:20px;
+                    ">
+
+                        <div>
+
+                            <div class="eyebrow">
+                                BUILD / PROJECTS
+                            </div>
+
+                            <h1>Projects</h1>
+
+                            <p>
+                                Things you're actively building inside
+                                MY TECH LAB.
+                            </p>
+
+                        </div>
+
+                        <button
+                            class="primary-btn"
+                            onclick="openProjectModal()"
+                        >
+                            + NEW PROJECT
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                {% if projects %}
+
+                <div class="projects-grid">
 
                     {% for project in projects %}
 
-                    <article class="project-card">
-
-
-                        <div class="project-header">
-
-                            <div class="project-icon">
-                                ⚡
-                            </div>
-
-
-                            <span class="project-status">
-                                {{ project.status }}
-                            </span>
-
-                        </div>
-
+                    <div class="project-card">
 
                         <h3>
                             {{ project.name }}
                         </h3>
 
-
                         <p>
                             {{ project.description }}
                         </p>
 
-
-                        <div class="tech-stack">
-
-                            {% for tech in project.technology.split(",") %}
-
-                            <span>
-                                {{ tech.strip() }}
-                            </span>
-
-                            {% endfor %}
-
+                        <div class="project-tech">
+                            {{ project.technology }}
                         </div>
 
+                        <div class="project-status">
+                            {{ project.status }}
+                        </div>
 
-                        <div class="project-footer">
+                        <div class="project-actions">
 
-                            <span class="project-path">
+                            <form
+                                method="POST"
+                                action="/projects/{{ project.id }}/delete"
+                            >
 
-                                <code>
-                                    ~/my-tech-lab
-                                </code>
-
-                            </span>
-
-
-                            <form action="/projects/{{ project.id }}/delete" method="post" style="display:inline;">
-
-                                <button type="submit" class="open-link"
-                                    onclick="return confirm('Delete this project?')">
-                                    Delete
+                                <button
+                                    type="submit"
+                                    class="delete-btn"
+                                >
+                                    DELETE
                                 </button>
 
                             </form>
 
                         </div>
 
-                    </article>
+                    </div>
 
                     {% endfor %}
 
+                </div>
 
-                    <!-- CREATE NEW PROJECT CARD -->
+                {% else %}
 
-                    <article class="project-card empty-card">
+                <div class="panel">
 
-                        <div class="empty-icon">
-                            +
+                    <div class="panel-body">
+
+                        <div class="empty">
+
+                            <div class="empty-icon">□</div>
+
+                            <div class="empty-title">
+                                No projects yet
+                            </div>
+
+                            <div class="empty-text">
+                                Start a build when you're ready.
+                            </div>
+
+                            <br>
+
+                            <button
+                                class="primary-btn"
+                                onclick="openProjectModal()"
+                            >
+                                + CREATE PROJECT
+                            </button>
+
                         </div>
 
-
-                        <h3>
-                            Create something new
-                        </h3>
-
-
-                        <p>
-                            Start your next experiment,
-                            application or automation project.
-                        </p>
-
-
-                        <button class="secondary-button" type="button" onclick="openProjectModal()">
-                            Create Project
-                        </button>
-
-                    </article>
+                    </div>
 
                 </div>
 
-
-                <!-- =================================================
-                     TERMINAL
-                     ================================================= -->
-
-                <section class="terminal-section">
-
-
-                    <div class="terminal-header">
-
-                        <div class="terminal-title">
-
-                            <span class="terminal-dot red"></span>
-
-                            <span class="terminal-dot yellow"></span>
-
-                            <span class="terminal-dot green"></span>
-
-
-                            <span class="terminal-name">
-                                terminal
-                            </span>
-
-                        </div>
-
-
-                        <span class="terminal-status">
-                            READY
-                        </span>
-
-                    </div>
-
-
-                    <div class="terminal-body">
-
-
-                        <div>
-
-                            <span class="terminal-prompt">
-                                malume@tech-lab
-                            </span>
-
-                            <span class="terminal-symbol">
-                                :
-                            </span>
-
-                            <span class="terminal-path">
-                                ~/my-tech-lab
-                            </span>
-
-                            <span class="terminal-symbol">
-                                $
-                            </span>
-
-                        </div>
-
-
-                        <div class="terminal-command">
-                            fastapi dev app/main.py
-                        </div>
-
-
-                        <div class="terminal-output">
-
-                            <span class="success">
-                                ✓
-                            </span>
-
-                            MY TECH LAB development environment ready.
-
-                        </div>
-
-
-                        <div class="terminal-cursor">
-                            _
-                        </div>
-
-                    </div>
-
-                </section>
+                {% endif %}
 
             </section>
 
 
-            <!-- =================================================
-                 FOOTER
-                 ================================================= -->
+        </div>
 
-            <footer class="footer">
+    </main>
 
-                <span>
-                    © 2026 MY TECH LAB
-                </span>
+</div>
 
 
-                <span class="footer-separator">
-                    •
-                </span>
+<!-- =================================================
+     PROJECT MODAL
+================================================== -->
 
+<div id="projectModal" class="modal">
 
-                <span>
-                    Built with Python + FastAPI
-                </span>
+    <div class="modal-box">
 
-            </footer>
+        <div class="modal-header">
 
-        </main>
+            <h2>New Project</h2>
 
-    </div>
+            <button
+                class="close-btn"
+                onclick="closeProjectModal()"
+            >
+                ×
+            </button>
 
+        </div>
 
-    <!-- =====================================================
-         NEW PROJECT MODAL
-         ===================================================== -->
+        <form method="POST" action="/projects/create">
 
-    <div id="projectModal" class="modal-overlay" onclick="closeProjectModal(event)">
+            <div class="form-group">
 
-        <div class="project-modal" onclick="event.stopPropagation()">
+                <label>PROJECT NAME</label>
 
+                <input
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="e.g. Finance Automation System"
+                >
 
-            <!-- MODAL HEADER -->
+            </div>
 
-            <div class="modal-header">
+            <div class="form-group">
 
-                <div>
+                <label>DESCRIPTION</label>
 
-                    <span class="section-eyebrow">
-                        DEVELOPMENT
-                    </span>
+                <textarea
+                    name="description"
+                    placeholder="What are you building?"
+                ></textarea>
 
+            </div>
 
-                    <h2>
-                        New Project
-                    </h2>
+            <div class="form-group">
 
+                <label>TECHNOLOGY</label>
 
-                    <p>
-                        Create a new project in your workspace.
-                    </p>
+                <input
+                    type="text"
+                    name="technology"
+                    placeholder="Python, FastAPI, HTML..."
+                >
 
-                </div>
+            </div>
 
+            <div class="form-actions">
 
-                <button type="button" class="modal-close" onclick="closeProjectModal()" aria-label="Close">
-                    ×
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeProjectModal()"
+                >
+                    CANCEL
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    CREATE PROJECT
                 </button>
 
             </div>
 
-
-            <!-- PROJECT FORM -->
-
-            <form action="/projects/create" method="post" class="project-form">
-
-
-                <div class="form-group">
-
-                    <label for="project-name">
-                        Project Name
-                    </label>
-
-
-                    <input id="project-name" name="name" type="text" placeholder="e.g. AI Assistant" autocomplete="off"
-                        required>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="project-description">
-                        Description
-                    </label>
-
-
-                    <textarea id="project-description" name="description" placeholder="Describe what you're building..."
-                        rows="4"></textarea>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="project-technology">
-                        Technology Stack
-                    </label>
-
-
-                    <input id="project-technology" name="technology" type="text"
-                        placeholder="Python, FastAPI, PostgreSQL" autocomplete="off">
-
-
-                    <small>
-                        Separate technologies with commas.
-                    </small>
-
-                </div>
-
-
-                <!-- FORM ACTIONS -->
-
-                <div class="form-actions">
-
-
-                    <button type="button" class="secondary-button" onclick="closeProjectModal()">
-                        Cancel
-                    </button>
-
-
-                    <button type="submit" class="primary-button">
-                        Create Project
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
+        </form>
 
     </div>
 
+</div>
 
-    <!-- =====================================================
-         JAVASCRIPT
-         ===================================================== -->
 
-    <script>
+<script>
 
-        function openProjectModal() {
+    /* ------------------------------------------------
+       VIEW SWITCHING
+    ------------------------------------------------ */
 
-            const modal =
-                document.getElementById("projectModal");
+    function switchView(viewName) {
 
-            if (!modal) {
-                console.error("Project modal not found.");
-                return;
-            }
+        document.querySelectorAll(".view").forEach(view => {
+            view.classList.remove("active");
+        });
 
-            modal.classList.add("active");
+        const target = document.getElementById(viewName);
 
-            const nameInput =
-                document.getElementById("project-name");
-
-            if (nameInput) {
-                setTimeout(function () {
-                    nameInput.focus();
-                }, 100);
-            }
-
+        if (target) {
+            target.classList.add("active");
         }
 
+        document.querySelectorAll(".nav-item").forEach(item => {
+            item.classList.remove("active");
+        });
 
-        function closeProjectModal(event) {
-
-            if (
-                event &&
-                event.target !== event.currentTarget
-            ) {
-                return;
-            }
-
-            const modal =
-                document.getElementById("projectModal");
-
-            if (!modal) {
-                return;
-            }
-
-            modal.classList.remove("active");
-
-        }
-
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (event.key === "Escape") {
-                    closeProjectModal();
-                }
-
-            }
+        const activeNav = document.querySelector(
+            `[data-view="${viewName}"]`
         );
 
-    </script>
+        if (activeNav) {
+            activeNav.classList.add("active");
+        }
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+
+    /* ------------------------------------------------
+       NAVIGATION
+    ------------------------------------------------ */
+
+    document.querySelectorAll(".nav-item[data-view]").forEach(item => {
+
+        item.addEventListener("click", function() {
+
+            const view = this.dataset.view;
+
+            switchView(view);
+
+        });
+
+    });
+
+
+    /* ------------------------------------------------
+       PROJECT MODAL
+    ------------------------------------------------ */
+
+    function openProjectModal() {
+
+        document
+            .getElementById("projectModal")
+            .classList.add("show");
+
+    }
+
+
+    function closeProjectModal() {
+
+        document
+            .getElementById("projectModal")
+            .classList.remove("show");
+
+    }
+
+
+    document
+        .getElementById("projectModal")
+        .addEventListener("click", function(event) {
+
+            if (event.target === this) {
+                closeProjectModal();
+            }
+
+        });
+
+
+    /* ------------------------------------------------
+       KEYBOARD
+    ------------------------------------------------ */
+
+    document.addEventListener("keydown", function(event) {
+
+        if (event.key === "Escape") {
+            closeProjectModal();
+        }
+
+    });
+
+</script>
 
 </body>
-
 </html>

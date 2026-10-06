@@ -1,0 +1,38 @@
+[
+    {
+        "name": "DSE Intelligence",
+        "source_type": "CHATGPT_AUTOMATION",
+        "description": "Financial markets, companies, valuation and investment signals.",
+        "domain": "FINANCIAL_MARKET",
+        "status": "ACTIVE",
+        "id": 1,
+        "created_at": "2026-10-06T09:14:36.984409+00:00"
+    },
+    {
+        "name": "Wealth Intelligence",
+        "source_type": "CHATGPT_AUTOMATION",
+        "description": "Wealth, investing, macroeconomic trends and financial opportunities.",
+        "domain": "WEALTH",
+        "status": "ACTIVE",
+        "id": 2,
+        "created_at": "2026-10-06T09:18:27.252620+00:00"
+    },
+    {
+        "name": "Domain Intelligence",
+        "source_type": "CHATGPT_AUTOMATION",
+        "description": "Domain names, digital assets, market trends and potential domain opportunities.",
+        "domain": "DIGITAL_ASSETS",
+        "status": "ACTIVE",
+        "id": 3,
+        "created_at": "2026-10-06T09:18:36.260632+00:00"
+    },
+    {
+        "name": "Tech Income Lab",
+        "source_type": "CHATGPT_AUTOMATION",
+        "description": "Technology trends, digital businesses, automation and technology income opportunities.",
+        "domain": "TECHNOLOGY",
+        "status": "ACTIVE",
+        "id": 4,
+        "created_at": "2026-10-06T09:18:46.448515+00:00"
+    }
+]

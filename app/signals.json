@@ -1,0 +1,19 @@
+[
+    {
+        "signal_type": "POTENTIAL_VALUE_DISLOCATION",
+        "title": "Potential valuation dislocation: CRDB Bank",
+        "description": "CRDB Bank shows a negative price movement while fundamental indicators remain positive. This may indicate a potential disconnect between market pricing and underlying business performance.",
+        "subject": "CRDB Bank",
+        "domain": "FINANCIAL_MARKET",
+        "geography": "TANZANIA",
+        "observation_ids": [
+            1,
+            2
+        ],
+        "strength": 7,
+        "confidence": 7,
+        "status": "DETECTED",
+        "detected_at": "2026-10-06T11:49:38.793790+00:00",
+        "id": 1
+    }
+]

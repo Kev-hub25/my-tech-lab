@@ -10,10 +10,14 @@
             1,
             2
         ],
-        "strength": 7,
+        "strength": 6,
         "confidence": 7,
         "status": "DETECTED",
         "detected_at": "2026-10-06T11:49:38.793790+00:00",
-        "id": 1
+        "id": 1,
+        "evidence_quality": 10,
+        "source_diversity": 2,
+        "persistence": 4,
+        "engine_version": "SIGNAL_ENGINE_V2_20261008"
     }
 ]

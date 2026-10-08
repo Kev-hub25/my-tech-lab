@@ -23,13 +23,13 @@ RESEARCH_REPORTS_FILE = BASE_DIR / "research_reports.json"
 RESEARCH_FEEDS_FILE = BASE_DIR / "research_feeds.json"
 SIGNALS_FILE = BASE_DIR / "signals.json"
 
-app = FastAPI(title="MY TECH LAB")
+SIGNAL_ENGINE_VERSION = "SIGNAL_ENGINE_V2_20261008"
 
+app = FastAPI(title="MY TECH LAB")
 
 templates = Jinja2Templates(
     directory=BASE_DIR / "templates"
 )
-
 
 app.mount(
     "/static",
@@ -575,6 +575,15 @@ def calculate_source_diversity(observations):
 
 def calculate_persistence(observations):
 
+    """
+    Temporary persistence model.
+
+    Current version measures repeated observations.
+
+    Later this will become time-aware persistence based
+    on distinct research periods.
+    """
+
     observation_count = len(
         observations
     )
@@ -640,6 +649,10 @@ def calculate_signal_confidence(
     )
 
 
+# ---------------------------------------------------------
+# VALUE DISLOCATION DETECTOR
+# ---------------------------------------------------------
+
 def detect_value_dislocation(observations):
 
     negative_price = [
@@ -690,9 +703,7 @@ def detect_value_dislocation(observations):
     if not positive_fundamentals:
         return None
 
-    matched = []
-
-    matched.append(
+    matched = [
         max(
             negative_price,
             key=lambda item:
@@ -700,10 +711,7 @@ def detect_value_dislocation(observations):
                     "importance",
                     5
                 )
-        )
-    )
-
-    matched.append(
+        ),
         max(
             positive_fundamentals,
             key=lambda item:
@@ -712,7 +720,7 @@ def detect_value_dislocation(observations):
                     5
                 )
         )
-    )
+    ]
 
     if positive_dividends:
 
@@ -749,6 +757,10 @@ def detect_value_dislocation(observations):
             1 if positive_dividends else 0
     }
 
+
+# ---------------------------------------------------------
+# SUPPLY GAP DETECTOR
+# ---------------------------------------------------------
 
 def detect_supply_gap(observations):
 
@@ -828,6 +840,10 @@ def detect_supply_gap(observations):
             1
     }
 
+
+# ---------------------------------------------------------
+# PRICE ARBITRAGE DETECTOR
+# ---------------------------------------------------------
 
 def detect_price_arbitrage(observations):
 
@@ -915,6 +931,10 @@ def detect_price_arbitrage(observations):
     }
 
 
+# ---------------------------------------------------------
+# TECHNOLOGY OPPORTUNITY DETECTOR
+# ---------------------------------------------------------
+
 def detect_technology_opportunity(observations):
 
     technology_improvement = [
@@ -974,9 +994,7 @@ def detect_technology_opportunity(observations):
     ):
         return None
 
-    matched = []
-
-    matched.append(
+    matched = [
         max(
             technology_improvement,
             key=lambda item:
@@ -985,7 +1003,7 @@ def detect_technology_opportunity(observations):
                     5
                 )
         )
-    )
+    ]
 
     if cost_reduction:
 
@@ -1010,8 +1028,8 @@ def detect_technology_opportunity(observations):
                         "importance",
                         5
                     )
+                )
             )
-        )
 
     return {
         "signal_type":
@@ -1035,6 +1053,10 @@ def detect_technology_opportunity(observations):
             1
     }
 
+
+# ---------------------------------------------------------
+# CONVERGENCE DETECTOR
+# ---------------------------------------------------------
 
 def detect_convergence(observations):
 
@@ -1083,6 +1105,10 @@ def detect_convergence(observations):
     }
 
 
+# ---------------------------------------------------------
+# BUILD SIGNAL
+# ---------------------------------------------------------
+
 def build_signal(
     pattern,
     all_observations
@@ -1106,7 +1132,7 @@ def build_signal(
 
     persistence = (
         calculate_persistence(
-            all_observations
+            observations
         )
     )
 
@@ -1146,13 +1172,10 @@ def build_signal(
     observation_ids = [
         observation.get("id")
         for observation in observations
-        if observation.get("id")
-        is not None
+        if observation.get("id") is not None
     ]
 
-    title = pattern[
-        "title"
-    ]
+    title = pattern["title"]
 
     if subject:
 
@@ -1163,17 +1186,13 @@ def build_signal(
 
     return {
         "signal_type":
-            pattern[
-                "signal_type"
-            ],
+            pattern["signal_type"],
 
         "title":
             title,
 
         "description":
-            pattern[
-                "description"
-            ],
+            pattern["description"],
 
         "subject":
             subject,
@@ -1211,9 +1230,16 @@ def build_signal(
         "detected_at":
             datetime.now(
                 timezone.utc
-            ).isoformat()
+            ).isoformat(),
+
+        "engine_version":
+            SIGNAL_ENGINE_VERSION
     }
 
+
+# ---------------------------------------------------------
+# SIGNAL IDENTITY
+# ---------------------------------------------------------
 
 def signal_key(signal):
 
@@ -1235,6 +1261,10 @@ def signal_key(signal):
     )
 
 
+# ---------------------------------------------------------
+# UPGRADE / MIGRATE EXISTING SIGNALS
+# ---------------------------------------------------------
+
 def upgrade_existing_signals(
     signals,
     research
@@ -1244,8 +1274,7 @@ def upgrade_existing_signals(
         observation.get("id"):
             observation
         for observation in research
-        if observation.get("id")
-        is not None
+        if observation.get("id") is not None
     }
 
     changed = False
@@ -1258,12 +1287,9 @@ def upgrade_existing_signals(
         )
 
         observations = [
-            research_by_id[
-                observation_id
-            ]
+            research_by_id[observation_id]
             for observation_id in observation_ids
-            if observation_id
-            in research_by_id
+            if observation_id in research_by_id
         ]
 
         if not observations:
@@ -1287,57 +1313,52 @@ def upgrade_existing_signals(
             )
         )
 
-        old_values = (
-            signal.get(
-                "evidence_quality"
-            ),
-            signal.get(
-                "source_diversity"
-            ),
-            signal.get(
-                "persistence"
-            )
-        )
-
-        new_values = (
+        strength = calculate_signal_strength(
             evidence_quality,
             source_diversity,
             persistence
         )
 
-        if old_values != new_values:
+        confidence = calculate_signal_confidence(
+            evidence_quality,
+            source_diversity
+        )
 
-            signal[
-                "evidence_quality"
-            ] = evidence_quality
+        new_values = {
 
-            signal[
-                "source_diversity"
-            ] = source_diversity
-
-            signal[
-                "persistence"
-            ] = persistence
-
-            signal[
-                "strength"
-            ] = calculate_signal_strength(
+            "evidence_quality":
                 evidence_quality,
+
+            "source_diversity":
                 source_diversity,
-                persistence
-            )
 
-            signal[
-                "confidence"
-            ] = calculate_signal_confidence(
-                evidence_quality,
-                source_diversity
-            )
+            "persistence":
+                persistence,
 
-            changed = True
+            "strength":
+                strength,
+
+            "confidence":
+                confidence,
+
+            "engine_version":
+                SIGNAL_ENGINE_VERSION
+        }
+
+        for field, value in new_values.items():
+
+            if signal.get(field) != value:
+
+                signal[field] = value
+
+                changed = True
 
     return changed
 
+
+# ---------------------------------------------------------
+# DETECT NEW SIGNALS
+# ---------------------------------------------------------
 
 def detect_signals():
 
@@ -1348,31 +1369,7 @@ def detect_signals():
     detected_signals = []
 
     if not research:
-
         return detected_signals
-
-
-    # -----------------------------------------------------
-    # Upgrade signals created by Signal Engine v1.
-    # -----------------------------------------------------
-
-    signals_changed = (
-        upgrade_existing_signals(
-            existing_signals,
-            research
-        )
-    )
-
-    if signals_changed:
-
-        save_signals(
-            existing_signals
-        )
-
-
-    # -----------------------------------------------------
-    # Group observations by subject.
-    # -----------------------------------------------------
 
     subjects = {}
 
@@ -1392,10 +1389,12 @@ def detect_signals():
             observation
         )
 
+    existing_keys = {
+        signal_key(signal)
+        for signal in existing_signals
+    }
 
-    # -----------------------------------------------------
-    # Run pattern detectors.
-    # -----------------------------------------------------
+    detected_keys = set()
 
     for subject, observations in subjects.items():
 
@@ -1422,41 +1421,19 @@ def detect_signals():
             )
         ]
 
-
         for pattern in patterns:
 
             if not pattern:
                 continue
-
 
             signal = build_signal(
                 pattern,
                 observations
             )
 
-
             key = signal_key(
                 signal
             )
-
-
-            existing_keys = {
-                signal_key(
-                    existing
-                )
-                for existing
-                in existing_signals
-            }
-
-
-            detected_keys = {
-                signal_key(
-                    detected
-                )
-                for detected
-                in detected_signals
-            }
-
 
             if key in existing_keys:
                 continue
@@ -1464,11 +1441,13 @@ def detect_signals():
             if key in detected_keys:
                 continue
 
-
             detected_signals.append(
                 signal
             )
 
+            detected_keys.add(
+                key
+            )
 
     return detected_signals
 
@@ -1774,7 +1753,6 @@ def add_research_feed(
                 existing_feed
         }
 
-
     next_id = max(
         [
             item.get(
@@ -1785,7 +1763,6 @@ def add_research_feed(
         ],
         default=0
     ) + 1
-
 
     feed_data = feed.model_dump()
 
@@ -1836,8 +1813,26 @@ def run_signal_detection():
 
     signals = load_signals()
 
+    research = load_research()
+
+    # -----------------------------------------------------
+    # Upgrade existing signals first.
+    # -----------------------------------------------------
+
+    signals_changed = upgrade_existing_signals(
+        signals,
+        research
+    )
+
+    # -----------------------------------------------------
+    # Detect genuinely new signals.
+    # -----------------------------------------------------
+
     detected_signals = detect_signals()
 
+    # -----------------------------------------------------
+    # Add new signals.
+    # -----------------------------------------------------
 
     next_id = max(
         [
@@ -1850,7 +1845,6 @@ def run_signal_detection():
         default=0
     ) + 1
 
-
     for signal in detected_signals:
 
         signal["id"] = next_id
@@ -1861,21 +1855,67 @@ def run_signal_detection():
 
         next_id += 1
 
+    # -----------------------------------------------------
+    # Save final combined state.
+    # -----------------------------------------------------
 
     save_signals(
         signals
     )
 
-
     return {
         "message":
             "Signal detection completed",
+
+        "signal_engine_version":
+            SIGNAL_ENGINE_VERSION,
+
+        "upgraded_existing_signals":
+            signals_changed,
 
         "new_signals":
             detected_signals,
 
         "total_signals":
             len(signals)
+    }
+
+
+# ---------------------------------------------------------
+# SIGNAL MIGRATION API
+# ---------------------------------------------------------
+
+@app.post("/api/signals/migrate")
+def migrate_signals():
+
+    signals = load_signals()
+
+    research = load_research()
+
+    signals_changed = upgrade_existing_signals(
+        signals,
+        research
+    )
+
+    save_signals(
+        signals
+    )
+
+    return {
+        "message":
+            "Signal migration completed",
+
+        "signal_engine_version":
+            SIGNAL_ENGINE_VERSION,
+
+        "changed":
+            signals_changed,
+
+        "total_signals":
+            len(signals),
+
+        "signals":
+            signals
     }
 
 
@@ -1887,6 +1927,37 @@ def run_signal_detection():
 def get_signals():
 
     return {
+        "signal_engine_version":
+            SIGNAL_ENGINE_VERSION,
+
         "signals":
             load_signals()
+    }
+
+
+# ---------------------------------------------------------
+# RUNTIME SYSTEM STATUS
+# ---------------------------------------------------------
+
+@app.get("/api/system/status")
+def system_status():
+
+    return {
+        "application":
+            "MY TECH LAB",
+
+        "signal_engine_version":
+            SIGNAL_ENGINE_VERSION,
+
+        "main_module":
+            __file__,
+
+        "signal_count":
+            len(load_signals()),
+
+        "research_count":
+            len(load_research()),
+
+        "status":
+            "ONLINE"
     }

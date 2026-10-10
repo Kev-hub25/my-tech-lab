@@ -1,1 +1,78 @@
-[]
+[
+    {
+        "opportunity_key": "POTENTIAL_VALUE_DISLOCATION|CRDB BANK|FINANCIAL_MARKET|TANZANIA",
+        "title": "Potential Investment Opportunity: CRDB Bank",
+        "opportunity_type": "INVESTMENT",
+        "subject": "CRDB Bank",
+        "domain": "FINANCIAL_MARKET",
+        "geography": "TANZANIA",
+        "source_signal_ids": [
+            1
+        ],
+        "source_observation_ids": [
+            1,
+            2
+        ],
+        "source_report_names": [
+            "DSE Intelligence - October 2026 Market Report"
+        ],
+        "thesis": "CRDB Bank shows a negative price movement while fundamental indicators remain positive. This may indicate a potential disconnect between market pricing and underlying business performance.",
+        "economic_mechanism": "Potential financial return could arise if the market price of CRDB Bank changes as investors incorporate new information about its underlying business performance. A price decline alone does not establish undervaluation.",
+        "market_score": 60.0,
+        "confidence_score": 7.0,
+        "personal_capture_score": null,
+        "research_mode": "STANDARD",
+        "status": "QUALIFYING",
+        "decision": "INVESTIGATE",
+        "requirements": [
+            "Verify the latest market price, trading date, and price history.",
+            "Verify recent financial statements and earnings growth.",
+            "Assess valuation using appropriate financial metrics and peers.",
+            "Review dividends, debt, cash flow, governance, and material news.",
+            "Estimate downside, liquidity, transaction costs, and time horizon.",
+            "Check available capital, emergency reserves, and risk tolerance before considering any investment decision."
+        ],
+        "information_gaps": [
+            "Establish whether the price movement is justified by valuation, business risks, market conditions, or new information.",
+            "Seek independent corroboration; multiple observations from one source do not count as independent source confirmation.",
+            "Compare price movement with earnings quality, valuation, and relevant company or market news."
+        ],
+        "next_best_research": [
+            {
+                "subject": "CRDB Bank",
+                "task": "Establish whether the price movement is justified by valuation, business risks, market conditions, or new information.",
+                "purpose": "Reduce a material information gap before committing money, time, or other resources.",
+                "research_mode": "DEEP",
+                "completed": false
+            },
+            {
+                "subject": "CRDB Bank",
+                "task": "Seek independent corroboration; multiple observations from one source do not count as independent source confirmation.",
+                "purpose": "Reduce a material information gap before committing money, time, or other resources.",
+                "research_mode": "DEEP",
+                "completed": false
+            },
+            {
+                "subject": "CRDB Bank",
+                "task": "Compare price movement with earnings quality, valuation, and relevant company or market news.",
+                "purpose": "Reduce a material information gap before committing money, time, or other resources.",
+                "research_mode": "DEEP",
+                "completed": false
+            }
+        ],
+        "priority_score": 41.5,
+        "downside": [
+            "The signal may be incomplete, stale, duplicated, or misleading.",
+            "The apparent opportunity may not produce a positive net return.",
+            "Time, capital, access, and execution constraints may prevent capture."
+        ],
+        "kill_conditions": [
+            "Reject if reliable evidence contradicts the core thesis.",
+            "Reject if the economic mechanism cannot be demonstrated.",
+            "Reject if realistic downside exceeds the acceptable risk limit."
+        ],
+        "created_at": "2026-10-10T07:47:24.865045+00:00",
+        "updated_at": "2026-10-10T07:49:59.389350+00:00",
+        "engine_version": "OPPORTUNITY_ENGINE_V1_20261010"
+    }
+]

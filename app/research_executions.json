@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "task_key": "1a919b6de0de7e27fc1aa733acc77074ac3aa066392007910e82b7629925750f",
+        "opportunity_key": "POTENTIAL_VALUE_DISLOCATION|CRDB BANK|FINANCIAL_MARKET|TANZANIA",
+        "subject": "CRDB Bank",
+        "provider": "TAVILY",
+        "status": "BLOCKED_CONFIGURATION",
+        "query": "CRDB Bank Establish whether the price movement is justified by valuation, business risks, market conditions, or new information. Reduce a material information gap before committing money, time, or other resources. TANZANIA",
+        "started_at": "2026-10-10T09:00:41.171551+00:00",
+        "completed_at": "2026-10-10T09:00:41.173870+00:00",
+        "duration_seconds": null,
+        "result_count": 0,
+        "new_findings_count": 0,
+        "duplicate_findings_count": 0,
+        "error": "TAVILY_API_KEY is not configured. Set the environment variable and retry.",
+        "caveats": [],
+        "engine_version": "RESEARCH_EXECUTION_ENGINE_V1_20261010"
+    },
+    {
+        "id": 2,
+        "task_key": "139ecbdf0206d4040c6fbcbbf9f57ad353d94fda68bc25bf6212d495916ef795",
+        "opportunity_key": "POTENTIAL_VALUE_DISLOCATION|CRDB BANK|FINANCIAL_MARKET|TANZANIA",
+        "subject": "CRDB Bank",
+        "provider": "TAVILY",
+        "status": "COMPLETED",
+        "query": "CRDB Bank Seek independent corroboration; multiple observations from one source do not count as independent source confirmation. Reduce a material information gap before committing money, time, or other resources. TANZANIA",
+        "started_at": "2026-10-10T09:08:31.712433+00:00",
+        "completed_at": "2026-10-10T09:08:57.210224+00:00",
+        "duration_seconds": 25.485,
+        "result_count": 5,
+        "new_findings_count": 5,
+        "duplicate_findings_count": 0,
+        "error": null,
+        "caveats": [],
+        "engine_version": "RESEARCH_EXECUTION_ENGINE_V1_20261010"
+    }
+]

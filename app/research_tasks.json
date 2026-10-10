@@ -1,0 +1,85 @@
+[
+    {
+        "task_key": "1a919b6de0de7e27fc1aa733acc77074ac3aa066392007910e82b7629925750f",
+        "opportunity_key": "POTENTIAL_VALUE_DISLOCATION|CRDB BANK|FINANCIAL_MARKET|TANZANIA",
+        "opportunity_title": "Potential Investment Opportunity: CRDB Bank",
+        "subject": "CRDB Bank",
+        "domain": "FINANCIAL_MARKET",
+        "geography": "TANZANIA",
+        "task": "Establish whether the price movement is justified by valuation, business risks, market conditions, or new information.",
+        "purpose": "Reduce a material information gap before committing money, time, or other resources.",
+        "research_mode": "DEEP",
+        "status": "BLOCKED",
+        "source_signal_ids": [
+            1
+        ],
+        "source_observation_ids": [
+            1,
+            2
+        ],
+        "evidence_observation_ids": [],
+        "attempt_count": 1,
+        "last_attempt_at": "2026-10-10T09:00:41.171551+00:00",
+        "created_at": "2026-10-10T08:04:51.996571+00:00",
+        "updated_at": "2026-10-10T09:00:41.173870+00:00",
+        "engine_version": "RESEARCH_TASK_ENGINE_V1_20261010",
+        "last_execution_id": 1,
+        "last_execution_status": "BLOCKED_CONFIGURATION",
+        "last_execution_findings_count": 0,
+        "last_execution_error": "TAVILY_API_KEY is not configured. Set the environment variable and retry."
+    },
+    {
+        "task_key": "139ecbdf0206d4040c6fbcbbf9f57ad353d94fda68bc25bf6212d495916ef795",
+        "opportunity_key": "POTENTIAL_VALUE_DISLOCATION|CRDB BANK|FINANCIAL_MARKET|TANZANIA",
+        "opportunity_title": "Potential Investment Opportunity: CRDB Bank",
+        "subject": "CRDB Bank",
+        "domain": "FINANCIAL_MARKET",
+        "geography": "TANZANIA",
+        "task": "Seek independent corroboration; multiple observations from one source do not count as independent source confirmation.",
+        "purpose": "Reduce a material information gap before committing money, time, or other resources.",
+        "research_mode": "DEEP",
+        "status": "COMPLETED",
+        "source_signal_ids": [
+            1
+        ],
+        "source_observation_ids": [
+            1,
+            2
+        ],
+        "evidence_observation_ids": [],
+        "attempt_count": 1,
+        "last_attempt_at": "2026-10-10T09:08:31.712433+00:00",
+        "created_at": "2026-10-10T08:04:51.996571+00:00",
+        "updated_at": "2026-10-10T09:08:57.210224+00:00",
+        "engine_version": "RESEARCH_TASK_ENGINE_V1_20261010",
+        "last_execution_id": 2,
+        "last_execution_status": "COMPLETED",
+        "last_execution_findings_count": 5,
+        "last_execution_error": null
+    },
+    {
+        "task_key": "c87d18b7e2c0734ede1e569eac84348e6a644d57709b52be94053cf005efd3a1",
+        "opportunity_key": "POTENTIAL_VALUE_DISLOCATION|CRDB BANK|FINANCIAL_MARKET|TANZANIA",
+        "opportunity_title": "Potential Investment Opportunity: CRDB Bank",
+        "subject": "CRDB Bank",
+        "domain": "FINANCIAL_MARKET",
+        "geography": "TANZANIA",
+        "task": "Compare price movement with earnings quality, valuation, and relevant company or market news.",
+        "purpose": "Reduce a material information gap before committing money, time, or other resources.",
+        "research_mode": "DEEP",
+        "status": "OPEN",
+        "source_signal_ids": [
+            1
+        ],
+        "source_observation_ids": [
+            1,
+            2
+        ],
+        "evidence_observation_ids": [],
+        "attempt_count": 0,
+        "last_attempt_at": null,
+        "created_at": "2026-10-10T08:04:51.996571+00:00",
+        "updated_at": "2026-10-10T08:07:52.843336+00:00",
+        "engine_version": "RESEARCH_TASK_ENGINE_V1_20261010"
+    }
+]
